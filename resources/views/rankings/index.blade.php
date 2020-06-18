@@ -8,47 +8,53 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>id</th>
-                    <th>category_id</th>
-                    <th>name</th>
-                    <th>rank1</th>
-                    <th>rank2</th>
-                    <th>rank3</th>
-                    <th>rank4</th>
-                    <th>rank5</th>
+                    <th></th>
+                    <th>カテゴリ</th>
+                    <th>ランキング名</th>
+                    <th>1位</th>
+                    <th>2位</th>
+                    <th>3位</th>
+                    <th>4位</th>
+                    <th>5位</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($rankings as $ranking)
                 <tr>
-                    <td>{{ $ranking->id }}</td>
-                    <td>{{ $ranking->cname2 }}<br>（{{ $ranking->cname1 }}）</td>
+                    <td>
+                        {!! link_to_route('rankings.edit', '編集', ['id' => $ranking->id], ['class' => 'btn btn-success']) !!}
+
+                        {!! Form::model($ranking, ['route' => ['rankings.destroy', $ranking->id], 'method' => 'delete']) !!}
+                            {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
+                        {!! Form::close() !!}
+                    </td>
+                    <td>{{ $ranking->category->name2 }}<br>（{{ $ranking->category->name1 }}）</td>
                     <td>{{ $ranking->name }}</td>
-                    <td>{{ $ranking->code1 }}<br>{{ $ranking->comment1 }}</td>
+                    <td>{{ $ranking->item1->code }}<br>{{ $ranking->item1->comment }}</td>
                     <td>
                         @if ($ranking->rank2 > 0)
-                            {{ $ranking->code2 }}<br>{{ $ranking->comment2 }}
+                            {{ $ranking->item2->code }}<br>{{ $ranking->item2->comment }}
                         @else
                             --
                         @endif
                     </td>
                     <td>
                         @if ($ranking->rank3 > 0)
-                            {{ $ranking->code3 }}<br>{{ $ranking->comment3 }}
+                            {{ $ranking->item3->code }}<br>{{ $ranking->item3->comment }}
                         @else
                             --
                         @endif
                     </td>
                     <td>
                         @if ($ranking->rank4 > 0)
-                            {{ $ranking->code4 }}<br>{{ $ranking->comment4 }}
+                            {{ $ranking->item4->code }}<br>{{ $ranking->item4->comment }}
                         @else
                             --
                         @endif
                     </td>
                     <td>
                         @if ($ranking->rank5 > 0)
-                            {{ $ranking->code5 }}<br>{{ $ranking->comment5 }}
+                            {{ $ranking->item5->code }}<br>{{ $ranking->item5->comment }}
                         @else
                             --
                         @endif
@@ -57,6 +63,12 @@
                 @endforeach
             </tbody>
         </table>
+        
     @endif
+
+    {{ $rankings->links('pagination::bootstrap-4') }}
+
+    {!! link_to_route('rankings.create', '新規ランキングの作成', [], ['class' => 'btn btn-primary']) !!}
+
 
 @endsection

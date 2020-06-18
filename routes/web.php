@@ -26,10 +26,5 @@ Route::post('login', 'Auth\LoginController@login')->name('login.post');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 
 
-// 機能
-Route::group(['middleware' => 'auth'], function () {
-    Route::resource('rankings', 'RankingsController', ['only' => ['create','show','store']]);
-});
-
 
 
