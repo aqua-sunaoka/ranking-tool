@@ -25,18 +25,45 @@ class RankingsController extends Controller
 
             $user = \Auth::user();          // ユーザ情報
             $rankings = Ranking::all();     // ランキングデータを取得
-            $categories = Category::all();     // ランキングデータを取得
+            $cname1s = Category::select('name1')->groupBy('name1')->get();     // 大カテゴリ名を取得
 
             // 一覧表示に必要なデータをセット
             $data = [
                 'user' => $user,
                 'rankings' => $rankings,
-                'categories' => $categories,
+                'cname1s' => $cname1s,
             ];
         }
 
         // welcome.blade.php に $dataを引き渡す。        
         return view('welcome', $data);
+
+    }
+
+    // getでrankings/にアクセスされた場合の「一覧表示処理」
+    public function show($cname1)
+    {
+
+        $data = [];
+        
+        if (\Auth::check()) {
+            // ユーザ認証されている場合
+
+            $user = \Auth::user();          // ユーザ情報
+            $rankings = Ranking::all();     // ランキングデータを取得
+            $cname1s = Category::select('name1')->groupBy('name1')->get();     // 大カテゴリ名を取得
+
+            // 一覧表示に必要なデータをセット
+            $data = [
+                'user' => $user,
+                'rankings' => $rankings,
+                'cname1s' => $cname1s,
+                'cname1' => $cname1,
+            ];
+        }
+
+        // show.blade.php に $dataを引き渡す。        
+        return view('rankings.show', $data);
 
     }
     

@@ -2,27 +2,28 @@
 
 @section('content')
 
-    <h1>ランキング一覧</h1>
+    <h1>{{ $cname1 }}のランキング一覧</h1>
 
     @if (count($cname1s) > 0)
         @include('rankings.navtabs', ['cname1s' => $cname1s])
     @endif
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th></th>
-                <th>カテゴリ</th>
-                <th>ランキング名</th>
-                <th>1位</th>
-                <th>2位</th>
-                <th>3位</th>
-                <th>4位</th>
-                <th>5位</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($rankings as $ranking)
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>カテゴリ</th>
+                    <th>ランキング名</th>
+                    <th>1位</th>
+                    <th>2位</th>
+                    <th>3位</th>
+                    <th>4位</th>
+                    <th>5位</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($rankings as $ranking)
+                @if ($ranking->category->name1 == $cname1 )
 
                 <tr>
                     <td>
@@ -64,11 +65,11 @@
                         @endif
                     </td>
                 </tr>
-                
-            @endforeach
-        </tbody>
-    </table>
+                @endif
+                @endforeach
+            </tbody>
+        </table>
 
     {!! link_to_route('rankings.create', '新規ランキングの作成', [], ['class' => 'btn btn-primary']) !!}
-
+        
 @endsection
