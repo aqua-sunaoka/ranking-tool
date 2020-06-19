@@ -25,11 +25,13 @@ class RankingsController extends Controller
 
             $user = \Auth::user();          // ユーザ情報
             $rankings = Ranking::all();     // ランキングデータを取得
+            $categories = Category::all();     // ランキングデータを取得
 
             // 一覧表示に必要なデータをセット
             $data = [
                 'user' => $user,
                 'rankings' => $rankings,
+                'categories' => $categories,
             ];
         }
 
