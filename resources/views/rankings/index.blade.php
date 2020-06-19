@@ -66,8 +66,6 @@
         
     @endif
 
-    {{ $rankings->links('pagination::bootstrap-4') }}
-
     {!! link_to_route('rankings.create', '新規ランキングの作成', [], ['class' => 'btn btn-primary']) !!}
 
 

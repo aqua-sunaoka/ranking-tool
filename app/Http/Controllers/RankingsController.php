@@ -24,7 +24,7 @@ class RankingsController extends Controller
             // ユーザ認証されている場合
 
             $user = \Auth::user();          // ユーザ情報
-            $rankings = Ranking::paginate(5);     // ランキングデータを取得（5件ずつ表示）
+            $rankings = Ranking::all();     // ランキングデータを取得
 
             // 一覧表示に必要なデータをセット
             $data = [
