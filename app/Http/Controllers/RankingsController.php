@@ -24,7 +24,7 @@ class RankingsController extends Controller
             // ユーザ認証されている場合
 
             $user = \Auth::user();          // ユーザ情報
-            $rankings = Ranking::all();     // ランキングデータを取得
+            $rankings = Ranking::paginate(5);     // ランキングデータを取得
             $cname1s = Category::select('name1')->groupBy('name1')->get();     // 大カテゴリ名を取得
 
             // 一覧表示に必要なデータをセット
@@ -40,7 +40,7 @@ class RankingsController extends Controller
 
     }
 
-    // getでrankings/にアクセスされた場合の「一覧表示処理」
+    // getでrankings/にアクセスされた場合の「大カテゴリごとの一覧表示処理」
     public function show($cname1)
     {
 
@@ -197,11 +197,13 @@ class RankingsController extends Controller
         
         // 1位商品コードを商品テーブルのidに変換
         $request->validate([
-            'code1' => 'required|exists:items,code',            // 入力必須＆商品テーブルに存在するコード
+            'code1' => 'required|exists:items,code|regex:/^[A-Z][a-z]{2,7}-\d{4,6}$/',  // 入力必須＆商品テーブルに存在するコード＆入力形式
+//            'code1' => 'required|exists:items,code',            // 入力必須＆商品テーブルに存在するコード
         ],
         [
             'required' => ':attribute は必須です。',
             'exists' => ':attribute は存在しません。',
+            'regex' => ':attribute の入力形式を確認してください。',     // 追加
         ],
         [
             'code1' => 'ランキング1位商品コード',
@@ -215,10 +217,12 @@ class RankingsController extends Controller
             // 2位データがある場合（NotNull または 空文字列ではない場合）
             // バリデード
             $request->validate([
-                'code2' => 'exists:items,code',                     // 商品テーブルに存在するコード
+                'code2' => 'exists:items,code|regex:/^[A-Z][a-z]{2,7}-\d{4,6}$/',   // 商品テーブルに存在するコード＆入力形式
+//                'code2' => 'exists:items,code',                     // 商品テーブルに存在するコード
             ],
             [
                 'exists' => ':attribute は存在しません。',
+                'regex' => ':attribute の入力形式を確認してください。',     // 追加
             ],
             [
                 'code2' => 'ランキング2位商品コード',
@@ -233,10 +237,12 @@ class RankingsController extends Controller
             // 3位データがある場合（NotNull または 空文字列ではない場合）
             // バリデード
             $request->validate([
-                'code3' => 'exists:items,code',                     // 商品テーブルに存在するコード
+                'code3' => 'exists:items,code|regex:/^[A-Z][a-z]{2,7}-\d{4,6}$/',   // 商品テーブルに存在するコード＆入力形式
+//                'code3' => 'exists:items,code',                     // 商品テーブルに存在するコード
             ],
             [
                 'exists' => ':attribute は存在しません。',
+                'regex' => ':attribute の入力形式を確認してください。',     // 追加
             ],
             [
                 'code3' => 'ランキング3位商品コード',
@@ -251,10 +257,12 @@ class RankingsController extends Controller
             // 4位データがある場合（NotNull または 空文字列ではない場合）
             // バリデード
             $request->validate([
-                'code4' => 'exists:items,code',                     // 商品テーブルに存在するコード
+                'code4' => 'exists:items,code|regex:/^[A-Z][a-z]{2,7}-\d{4,6}$/',   // 商品テーブルに存在するコード＆入力形式
+//                'code4' => 'exists:items,code',                     // 商品テーブルに存在するコード
             ],
             [
                 'exists' => ':attribute は存在しません。',
+                'regex' => ':attribute の入力形式を確認してください。',     // 追加
             ],
             [
                 'code4' => 'ランキング4位商品コード',
@@ -268,11 +276,14 @@ class RankingsController extends Controller
         } else {
             // 5位データがある場合（NotNull または 空文字列ではない場合）
             // バリデード
-            $request->validate([
-                'code5' => 'exists:items,code',                     // 商品テーブルに存在するコード
+            $request->validate([        // 5位のみルールを配列で指定す記述あり
+                'code5' => ['exists:items,code','regex:/^[A-Z][a-z]{2,7}-\d{4,6}$/'],    // 商品テーブルに存在するコード＆入力形式
+//                'code5' => 'exists:items,code|regex:/^[A-Z][a-z]{2,7}-\d{4,6}$/',    // 商品テーブルに存在するコード＆入力形式
+//                'code5' => 'exists:items,code',                     // 商品テーブルに存在するコード
             ],
             [
                 'exists' => ':attribute は存在しません。',
+                'regex' => ':attribute の入力形式を確認してください。',     // 追加
             ],
             [
                 'code5' => 'ランキング5位商品コード',
